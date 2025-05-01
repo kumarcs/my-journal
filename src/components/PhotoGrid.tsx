@@ -1,0 +1,1 @@
+// PhotoGrid.tsx - React component

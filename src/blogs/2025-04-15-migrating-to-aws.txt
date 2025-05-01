@@ -1,0 +1,2 @@
+This is a sample blog post written in plain text.
+Feel free to replace it with your own.
