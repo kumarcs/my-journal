@@ -4,9 +4,9 @@ import React from 'react';
 const BlogList = () => {
   const blogs = [
     {
-      slug: "2025-04-15-migrating-to-aws",
-      title: "Migrating to AWS",
-      date: "2025-04-15"
+      slug: "2025-05-03-welcome-blog",
+      title: "Welcome Blog",
+      date: "2025-05-03"
     }
   ];
 

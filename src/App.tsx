@@ -14,9 +14,9 @@ const App = () => (
       <Routes>
         <Route path="/" element={(
           <>
-            <ResumeViewer />
             <PhotoGrid />
             <BlogList />
+            <ResumeViewer />
           </>
         )} />
         <Route path="/blog/:slug" element={<BlogPost />} />
