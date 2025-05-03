@@ -1,6 +1,6 @@
 
 import React from 'react';
-import info from '../data/info.json';
+import info from '../personalData/info.json';
 
 const Header = () => (
   <header className="mb-6 text-center">
