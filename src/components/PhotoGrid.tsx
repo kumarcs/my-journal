@@ -5,7 +5,7 @@ const PhotoGrid = () => {
   const [photos, setPhotos] = useState<string[]>([]);
 
   useEffect(() => {
-    fetch('/src/data/photos.json')
+    fetch('/public/data/photos.json')
       .then(res => res.json())
       .then(setPhotos);
   }, []);
