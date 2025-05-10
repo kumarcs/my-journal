@@ -6,6 +6,8 @@ import ResumeViewer from './components/ResumeViewer';
 import PhotoGrid from './components/PhotoGrid';
 import BlogList from './components/BlogList';
 import BlogPost from './components/BlogPost';
+// import './index.css';
+import './output.css';
 
 const App = () => (
   <Router>
