@@ -1,1 +1,9 @@
-{ "compilerOptions": { "target": "ESNext", "module": "ESNext", "jsx": "react-jsx" } }
+{
+    "compilerOptions": {
+      "jsx": "react-jsx", // Use "react-jsx" for React 17+ or "react" for older versions
+      "moduleResolution": "node", // Ensure Node module resolution is used
+      "esModuleInterop": true, // Enable ES module interop
+      "skipLibCheck": true,// Optional: Skip type checking of declaration files
+      "resolveJsonModule": true,
+    }
+  }
