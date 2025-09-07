@@ -1,0 +1,238 @@
+/** 
+LLD interview practice
+
+
+
+Uber like ride sharing app
+
+
+requirements 
+functional 
+enter or search current and destination location 
+check estimated time and fare 
+book a ride 
+complete the ride 
+see past rides 
+concurrency handling - multiple drivers accepts at same time 
+note - above requirements are based on user journey but points should be product perspective like - 
+support cancelling of ride 
+support correct ride status changes 
+provide estimated fare and completion time etc
+
+
+not included - 
+payment 
+map search or pin 
+calling or texting 
+Driver ratings 
+GPS tracking
+
+
+
+non functional 
+highly available 
+geographical fast (scalable)
+low latency in  rider assignment
+
+
+
+model and relations 
+
+Class names - 
+User -> Person, Driver
+Map
+RideManager
+enum RideStatus 
+Ride 
+
+**/
+
+// Class Implementation - 
+
+class Person implements User {
+//personal details 
+}
+
+class Driver implements User {
+    private String name;
+    private String car;
+    private String licence;
+    private Double rating;
+
+    // Constructor
+    public Driver(String name, String car, String licence, Double rating) {
+        this.name = name;
+        this.car = car;
+        this.licence = licence;
+        this.rating = rating;
+    }
+
+    // Other methods
+    public void updateRating(Double newRating) {
+        this.rating = newRating;
+    }
+}
+
+class MapManager {
+    private QuadrupleMap map;
+
+    // Method to get radius of search
+    public static double getRadiusOfSearch(double longitude, double latitude) {
+        // Implementation here
+        return 0.0;
+    }
+
+    public static 
+}
+
+
+
+
+// Riding strategy 
+interface DriverFindingStrategy {
+    public Driver getDriver(Ride ride);
+}
+
+class NearestDriverStrategy implements DriverFindingStrategy {
+    public Driver getDrivers(Ride ride) {
+        Double radius = MapManager.getRadiusOfSearch(ride.getDestination().getLongitude(), ride.getDestination().getLatitude());
+        getAvailableDriversInRadius(radius);
+    }
+    
+}
+
+
+interface RideBookingStrategy {
+    public Ride bookRide(Ride ride);
+}
+
+class firstSelectRideBookingStrategy implements RideBookingStrategy {
+    public Ride bookRide(Ride ride, List<Driver> drivers) {
+        // Implementation here
+        int retryCount = 0;
+        while(retryCount < 3) {
+            for (Driver driver : drivers) {
+                Futuer<Boolean> response =  NotificationManager.sendNotification(driver, ride);
+                if (response.get()) {
+                    // Driver accepted the ride
+                    ride.setDriver(driver);
+                    ride.setStatus(RideStatus.ACCEPTED);
+                    return ride;
+                } else {
+                    // Driver rejected the ride
+                    continue;
+                }
+
+            }
+            retryCount++;
+        }
+
+        return null;
+    }
+}
+
+
+// since the ride status and paymentMode can be changed so its a lenient way of implementation
+public class RideBuilder {
+    Ride ride = new Ride();
+
+    public void reset() {
+        this.ride = new ride();
+    }
+
+    public void setDestination(Location location) {
+        this.ride.setDestination(location);
+    }
+
+
+    public Ride getRide() {
+        Ride tmpRide = ride;
+        this.reset();
+        return tmpRide;
+    }
+}
+
+class Ride {
+    Location source;
+    Location destination;
+    Date createdAt;
+    RideStatus status;
+    PaymentMode mode;
+}
+
+
+
+APIs 
+
+Driver matchDriver(Ride ride);
+GET /matchDriver
+Request:
+{
+    "riderID": 123,
+    "source": "",
+    "destination": ""
+}
+Response:
+{
+    "driverId": 789,
+    "vehicleNumber": "PB101234"
+}
+
+
+Ride updateStatus(Ride ride, RideStatus status)
+PUT /rides/{rideId}/updateStatus
+Request:
+{
+    "ride": 123 
+    "Status": "STARTED"
+} 
+Response:
+{
+    "ride": 123 
+    "rideStatus": "STARTED"
+    "status": "success"
+}
+
+Location getCurrentLocation();
+List<Transaction> pastTransactions;
+PaymentStatus makePayment(Transaction);
+
+
+/**
+
+db storage needs 
+Ride objects
+1 object - 300B
+
+number of users 
+APP registered - 100M
+daily Active user - 10M 
+rides per day -> 1M 
+
+ride objects/transactions created -> 300B*1M -> 300MB
+1 year -> 400*300MB -> 120GB
+
+for 10 such objects -> 1200GB -> 1TB per day
+
+
+
+queries per second 
+
+Write queries 
+
+rides happended -> 10M/day globally -> ~100QPS 
+updating ride status -> 10M/day * 4status -> 40M/day -> 40QPS 
+updating driver location -> 10M drivers * 2 location update/sec -> 20M/sec -> 200QPS
+making payment -> 10M/day -> 100QPS
+
+
+Read Queries 
+driversInArea -> 120QPS
+getPastRides -> 10QPS 
+searchLocation -> 240QPS
+fetchDriverDetails -> 100QPS 
+* above estimations are based on 100rides happended per sec basis 
+
+
+**/
+

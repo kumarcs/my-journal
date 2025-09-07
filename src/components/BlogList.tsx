@@ -7,6 +7,11 @@ const BlogList = () => {
       slug: "2025-05-03-welcome-blog",
       title: "Welcome Blog",
       date: "2025-05-03"
+    }, 
+    {
+      slug: "2025-09-07-uber-lld-practice",
+      title: "Uber LLD Practice",
+      date: "2025-09-07"
     }
   ];
 
